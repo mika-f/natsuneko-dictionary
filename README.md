@@ -1,4 +1,4 @@
 # Kaomojic
 
-Kaomoji Dictionary for ATOK
+Kaomoji Dictionary for IMEs
 
