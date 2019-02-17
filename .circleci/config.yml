@@ -1,0 +1,19 @@
+version: 2
+jobs:
+  tests:
+    docker:
+      - image: perl:5.28.1
+
+    steps:
+      - checkout
+
+      - run:
+          name: Duplication Check
+          command: perl ./tests/duplication.pl ./kaomoji.txt
+
+workflows:
+  version: 2
+  tests:
+    jobs:
+      - tests
+
