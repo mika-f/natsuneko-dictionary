@@ -3,12 +3,14 @@ use strict;
 use feature qw/say/;
 use utf8;
 
-my (%dictionary, @duplications);
+my (%dictionary, @duplications, $i);
 
 while (my $line = <>) {
     chomp $line;
+    $i++;
+
     if (defined $dictionary{$line}) {
-        push @duplications, $line;
+        push @duplications, +{line => $i, entry => $line};
         next;
     }
     $dictionary{$line} = 1;
@@ -16,7 +18,7 @@ while (my $line = <>) {
 
 if (scalar(@duplications) > 0) {
     say "duplication entries:";
-    say $_ for @duplications;
+    say "line: " . $_->{line} . ", entry: " . $_->{entry} for @duplications;
     exit 1;
 }
 
