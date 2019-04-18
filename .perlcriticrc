@@ -1,6 +1,6 @@
 [Perl::Critic::Policy::TestingAndDebugging::RequireUseStrict]
 equivalent_modules = Kaomojic::Strict
 
-[Perl::Ctiric::Policy::TestingAndDebugging::RequireUseWarning]
+[Perl::Critic::Policy::TestingAndDebugging::RequireUseWarnings]
 equivalent_modules = Kaomojic::Strict
 
