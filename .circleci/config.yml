@@ -8,7 +8,7 @@ executors:
 commands:
   install_carton:
     steps:
-      - run: cpanm Carton
+      - run: cpanm Carton --notest
 
   restore_repo:
     steps:
