@@ -1,0 +1,6 @@
+[Perl::Critic::Policy::TestingAndDebugging::RequireUseStrict]
+equivalent_modules = Kaomojic::Strict
+
+[Perl::Ctiric::Policy::TestingAndDebugging::RequireUseWarning]
+equivalent_modules = Kaomojic::Strict
+
