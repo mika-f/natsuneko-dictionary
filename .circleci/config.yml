@@ -1,19 +1,99 @@
-version: 2
-jobs:
-  tests:
+version: 2.1
+executors:
+  perl:
     docker:
       - image: perl:5.28.1
+    working_directory: ~/repo
 
+commands:
+  install_carton:
     steps:
-      - checkout
+      - run: cpanm Carton
 
-      - run:
-          name: Duplication Check
-          command: perl ./tests/duplication.pl ./kaomoji.txt
+  restore_repo:
+    steps:
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Branch }}-{{ .Revision }}
+            - v1-repo-{{ .Branch }}-
+            - v1-repo-
+
+  save_repo:
+    steps:
+      - save_cache:
+          paths:
+            - .
+          key: v1-repo-{{ .Branch }}-{{ .Revision }}
+
+  restore_deps:
+    steps:
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "cpanfile.snapshot" }}
+            - v1-dependencies-
+
+  save_deps:
+    steps:
+      - save_cache:
+          paths:
+            - local
+          key: v1-dependencies-{{ checksum "cpanfile.snapshot" }}
+
+jobs:
+  checkout_code:
+    executor: perl
+    steps:
+      - restore_repo
+      - checkout
+      - save_repo
+
+  install_deps:
+    executor: perl
+    steps:
+      - restore_repo
+      - restore_deps
+      - install_carton
+      - run: carton install
+      - save_deps
+
+  test:
+    executor: perl
+    steps:
+      - restore_repo
+      - restore_deps
+      - install_carton
+      - run: carton exec prove ./t/
+
+  generate:
+    executor: perl
+    steps:
+      - restore_repo
+      - restore_deps
+      - install_carton
+      - run: carton exec perl generator.pl
+
+  release:
+    executor: perl
+    steps:
+      - run: echo 1
 
 workflows:
-  version: 2
-  tests:
+  version: 2.1
+  build_accept_release:
     jobs:
-      - tests
-
+      - checkout_code
+      - install_deps:
+          requires:
+            - checkout_code
+      - test:
+          requires:
+            - install_deps
+      - generate:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
+      - release:
+          requires:
+            - generate
