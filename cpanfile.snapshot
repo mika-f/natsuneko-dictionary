@@ -40,6 +40,17 @@ DISTRIBUTIONS
     requirements:
       ExtUtils::MakeMaker 0
       Test::More 0
+  Clone-PP-1.07
+    pathname: N/NE/NEILB/Clone-PP-1.07.tar.gz
+    provides:
+      Clone::PP 1.07
+    requirements:
+      Exporter 0
+      ExtUtils::MakeMaker 0
+      perl 5.006
+      strict 0
+      vars 0
+      warnings 0
   Config-Tiny-2.23
     pathname: R/RS/RSAVAGE/Config-Tiny-2.23.tgz
     provides:
@@ -67,6 +78,29 @@ DISTRIBUTIONS
       Symbol 0
       Test 0
       perl 5.006
+  Data-Printer-0.40
+    pathname: G/GA/GARU/Data-Printer-0.40.tar.gz
+    provides:
+      DDP undef
+      Data::Printer 0.40
+      Data::Printer::Filter undef
+      Data::Printer::Filter::DB undef
+      Data::Printer::Filter::DateTime undef
+      Data::Printer::Filter::Digest undef
+    requirements:
+      Carp 0
+      Clone::PP 0
+      ExtUtils::MakeMaker 0
+      Fcntl 0
+      File::HomeDir 0.91
+      File::Spec 0
+      File::Temp 0
+      Package::Stash 0.3
+      Scalar::Util 0
+      Sort::Naturally 0
+      Term::ANSIColor 3
+      Test::More 0.88
+      version 0.77
   Devel-GlobalPhase-0.003003
     pathname: H/HA/HAARG/Devel-GlobalPhase-0.003003.tar.gz
     provides:
@@ -1091,6 +1125,20 @@ DISTRIBUTIONS
     requirements:
       Module::Build::Tiny 0.035
       perl 5.005
+  Sort-Naturally-1.03
+    pathname: B/BI/BINGOS/Sort-Naturally-1.03.tar.gz
+    provides:
+      Sort::Naturally 1.03
+    requirements:
+      ExtUtils::MakeMaker 0
+      perl 5
+  String-CamelCase-0.04
+    pathname: H/HI/HIO/String-CamelCase-0.04.tar.gz
+    provides:
+      String::CamelCase 0.04
+    requirements:
+      ExtUtils::MakeMaker 0
+      Test::More 0
   String-Format-1.18
     pathname: S/SR/SREZIC/String-Format-1.18.tar.gz
     provides:
@@ -1285,3 +1333,14 @@ DISTRIBUTIONS
       perl 5.006
       strict 0
       warnings 0
+  YAML-Syck-1.31
+    pathname: T/TO/TODDR/YAML-Syck-1.31.tar.gz
+    provides:
+      JSON::Syck 1.31
+      YAML::Dumper::Syck undef
+      YAML::Loader::Syck undef
+      YAML::Syck 1.31
+    requirements:
+      ExtUtils::MakeMaker 0
+      Test::More 0
+      perl 5.006
