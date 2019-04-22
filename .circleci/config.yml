@@ -53,7 +53,7 @@ jobs:
       - restore_repo
       - restore_deps
       - install_carton
-      - run: carton install
+      - run: carton install --deployment
       - save_deps
 
   test:
