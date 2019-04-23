@@ -75,7 +75,6 @@ jobs:
       - restore_repo
       - restore_bins
       - restore_deps
-      - install_carton
       - run: carton exec prove ./t/
 
   generate:
@@ -84,7 +83,6 @@ jobs:
       - restore_repo
       - restore_bins
       - restore_deps
-      - install_carton
       - run: carton exec perl generator.pl
 
   release:
