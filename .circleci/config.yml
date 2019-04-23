@@ -6,9 +6,20 @@ executors:
     working_directory: ~/repo
 
 commands:
-  install_carton:
+  restore_bins:
     steps:
-      - run: cpanm Carton --notest
+      - restore_cache:
+          keys:
+            - v1-bins-{{ .Branch }}-{{ .Revision }}
+            - v1-bins-{{ .Branch }}-
+            - v1-bins-
+
+  save_bins:
+    steps:
+      - save_cache:
+          paths:
+            - /usr/local/bin/cpanm
+          key: v1-bins-{{ .Branch }}-{{ .Revision }}
 
   restore_repo:
     steps:
@@ -51,15 +62,18 @@ jobs:
     executor: perl
     steps:
       - restore_repo
+      - restore_bins
       - restore_deps
-      - install_carton
+      - run: cpanm Carton --notest
       - run: carton install --deployment
+      - save_bins
       - save_deps
 
   test:
     executor: perl
     steps:
       - restore_repo
+      - restore_bins
       - restore_deps
       - install_carton
       - run: carton exec prove ./t/
@@ -68,6 +82,7 @@ jobs:
     executor: perl
     steps:
       - restore_repo
+      - restore_bins
       - restore_deps
       - install_carton
       - run: carton exec perl generator.pl
