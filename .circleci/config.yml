@@ -2,7 +2,7 @@ version: 2.1
 executors:
   perl:
     docker:
-      - image: perl:5.28.1
+      - image: perl:5.28.2
     working_directory: ~/repo
 
 commands:
@@ -19,7 +19,7 @@ commands:
       - save_cache:
           paths:
             - /usr/local/bin/carton
-            - /usr/local/lib/perl5/site_perl/5.28.1
+            - /usr/local/lib/perl5/site_perl/5.28.2
           key: v1-global-deps-{{ .Branch }}-{{ .Revision }}
 
   restore_repo:
