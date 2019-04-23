@@ -17,7 +17,7 @@ sub run {
     my $cls = "Kaomojic::Tasks::" . shift @ARGV;
     load $cls;
 
-    $cls->run(\@ARGV);
+    $cls->run(@ARGV);
 }
 
 run;

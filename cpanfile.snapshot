@@ -1403,6 +1403,16 @@ DISTRIBUTIONS
       strict 0
       version 0
       warnings 0
+  Text-CSV_XS-1.39
+    pathname: H/HM/HMBRAND/Text-CSV_XS-1.39.tgz
+    provides:
+      Text::CSV_XS 1.39
+    requirements:
+      Config 0
+      ExtUtils::MakeMaker 0
+      IO::Handle 0
+      Test::More 0
+      XSLoader 0
   Tie-IxHash-1.23
     pathname: C/CH/CHORNY/Tie-IxHash-1.23.tar.gz
     provides:
@@ -1422,14 +1432,3 @@ DISTRIBUTIONS
       perl 5.006
       strict 0
       warnings 0
-  YAML-Syck-1.31
-    pathname: T/TO/TODDR/YAML-Syck-1.31.tar.gz
-    provides:
-      JSON::Syck 1.31
-      YAML::Dumper::Syck undef
-      YAML::Loader::Syck undef
-      YAML::Syck 1.31
-    requirements:
-      ExtUtils::MakeMaker 0
-      Test::More 0
-      perl 5.006

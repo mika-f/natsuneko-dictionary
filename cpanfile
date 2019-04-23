@@ -3,7 +3,7 @@ requires 'DDP';
 requires 'Import::Base';
 requires 'Mouse';
 requires 'String::CamelCase';
-requires 'YAML::Syck';
+requires 'Text::CSV_XS';
 
 requires 'Test::Spec';
 requires 'Test::Perl::Critic';
