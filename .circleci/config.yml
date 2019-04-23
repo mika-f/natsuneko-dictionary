@@ -6,20 +6,21 @@ executors:
     working_directory: ~/repo
 
 commands:
-  restore_bins:
+  restore_global_deps:
     steps:
       - restore_cache:
           keys:
-            - v1-bins-{{ .Branch }}-{{ .Revision }}
-            - v1-bins-{{ .Branch }}-
-            - v1-bins-
+            - v1-global-deps-{{ .Branch }}-{{ .Revision }}
+            - v1-global-deps-{{ .Branch }}-
+            - v1-global-deps-
 
-  save_bins:
+  save_global_deps:
     steps:
       - save_cache:
           paths:
-            - /usr/local/bin/cpanm
-          key: v1-bins-{{ .Branch }}-{{ .Revision }}
+            - /usr/local/bin/carton
+            - /usr/local/lib/perl5/site_perl/5.28.1
+          key: v1-global-deps-{{ .Branch }}-{{ .Revision }}
 
   restore_repo:
     steps:
@@ -62,18 +63,18 @@ jobs:
     executor: perl
     steps:
       - restore_repo
-      - restore_bins
+      - restore_global_deps
       - restore_deps
       - run: cpanm Carton --notest
       - run: carton install --deployment
-      - save_bins
+      - save_global_deps
       - save_deps
 
   test:
     executor: perl
     steps:
       - restore_repo
-      - restore_bins
+      - restore_global_deps
       - restore_deps
       - run: carton exec prove ./t/
 
@@ -81,7 +82,7 @@ jobs:
     executor: perl
     steps:
       - restore_repo
-      - restore_bins
+      - restore_global_deps
       - restore_deps
       - run: carton exec perl generator.pl
 
