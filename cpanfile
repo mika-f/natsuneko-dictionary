@@ -1,5 +1,6 @@
 requires 'Data::Validator';
 requires 'DDP';
+requires 'Encode::Locale';
 requires 'Import::Base';
 requires 'List::MoreUtils';
 requires 'Mouse';

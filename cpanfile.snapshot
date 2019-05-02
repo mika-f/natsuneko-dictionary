@@ -168,6 +168,15 @@ DISTRIBUTIONS
       base 0
       strict 0
       warnings 0
+  Encode-Locale-1.05
+    pathname: G/GA/GAAS/Encode-Locale-1.05.tar.gz
+    provides:
+      Encode::Locale 1.05
+    requirements:
+      Encode 2
+      Encode::Alias 0
+      ExtUtils::MakeMaker 0
+      perl 5.008
   Exception-Class-1.44
     pathname: D/DR/DROLSKY/Exception-Class-1.44.tar.gz
     provides:
