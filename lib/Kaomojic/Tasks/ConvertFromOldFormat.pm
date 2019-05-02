@@ -38,7 +38,7 @@ sub _write_entries {
   die 'output path is empty' unless $path;
   open(my $fh, '>:encoding(utf8)', $path) or die "cannot open the file: $path";
 
-  my $csv = Text::CSV_XS->new({ binary => 1});
+  my $csv = Text::CSV_XS->new({ binary => 1 });
   $csv->say($fh, $_) for @$entries;
   close $fh;
 }
