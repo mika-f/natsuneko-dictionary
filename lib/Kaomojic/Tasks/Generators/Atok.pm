@@ -2,7 +2,7 @@ package Kaomojic::Tasks::Generators::Atok;
 use Kaomojic::Strict;
 
 use Data::Validator;
-use Encode qw/decode_utf8 encode encode_utf8/;
+use List::MoreUtils qw/natatime/;
 use Module::Load;
 
 sub run {
@@ -20,28 +20,31 @@ sub run {
 
   my $cls = "Kaomojic::Fixtures::$fixture";
   load $cls;
-  my @entries = map { encode_utf8($_->[1]) } @{$cls->load};
+  my @entries = map { [$_->[0], $_->[1]] } @{$cls->load};
 
   # UTF-16LE にうまく出力できないので、 UTF-8 → nkf でやる
-  open(FH, '>:raw', $dist) or die "cannot open the file: $dist";
+  # 1辞書あたり同じ読みは最大512エントリーのようなので、(めんどうなので読みに関係なく) 512エントリーずつ分割しておく
+  my $iterator = natatime 512, @entries;
+  my $separate = 1;
+  while (my @chunk = $iterator->()) {
+    open(my $fh, '>:raw:encoding(utf-16le)', "$dist/kaomojic$separate.txt") or die "cannot open the file: $dist/kaomojic$separate.txt";
+    print $fh "\x{FEFF}"; # BOM for Unicode
+    say $fh '!!ATOK_TANGO_TEXT_HEADER_1';
+    say $fh '!!一覧出力';
+    say $fh '!!対象辞書;Kaomojic.dic';
+    say $fh '!!単語種類;登録単語(*)';
+    say $fh '';
 
-  say FH $class->_str('!!ATOK_TANGO_TEXT_HEADER_1');
-  say FH $class->_str('!!一覧出力');
-  say FH $class->_str('!!対象辞書;Kaomojic.dic');
-  say FH $class->_str('!!単語種類;登録単語(*)');
-  say FH $class->_str('');
+    foreach my $entry (@chunk) {
+      my $a = $entry->[0] || $aliased;
+      my $b = $entry->[1];
 
-  say FH $class->_str("$aliased\t$_\t顔文字*") foreach @entries;
+      say $fh "$a\t$b\t顔文字*";
+    }
 
-  close FH;
-
-  die 'nkf command not found' unless `command -v nkf`;
-  `nkf -w16L --overwrite $dist`;
-}
-
-sub _str {
-  my ($self, $text) = @_;
-  return $text;
+    close $fh;
+    $separate += 1;
+  }
 }
 
 1;
