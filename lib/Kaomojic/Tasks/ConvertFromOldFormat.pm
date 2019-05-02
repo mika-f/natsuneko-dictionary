@@ -53,6 +53,6 @@ sub _write_entries {
 
 =head1 DESCRIPTION
 
-Convert from old Kaomojic dictionary (plain text) to new Kaomojic dictionary (YAML).
+旧形式の Kaomojic 辞書 (プレーンテキスト) から新形式の Kaomojic 辞書 (CSV) へと変換します。
 
 =cut

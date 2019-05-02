@@ -78,13 +78,14 @@ jobs:
       - restore_deps
       - run: carton exec prove ./t/
 
-  generate:
+  generate_atok:
     executor: perl
     steps:
       - restore_repo
       - restore_global_deps
       - restore_deps
-      - run: carton exec perl generator.pl
+      - run: apt install nkf -y
+      - run: ./bin/runner.sh Generators::Atok Kaomojic
 
   release:
     executor: perl
@@ -102,7 +103,7 @@ workflows:
       - test:
           requires:
             - install_deps
-      - generate:
+      - generate_atok:
           requires:
             - test
           filters:
