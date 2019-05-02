@@ -1,5 +1,8 @@
 use Kaomojic::Strict;
 
+# https://metacpan.org/pod/Test::More#utf8-/-%22Wide-character-in-print%22
+use open ':std', ':encoding(utf8)';
+
 use Encode qw/encode_utf8/;
 use List::MoreUtils qw/duplicates indexes/;
 use String::CamelCase qw/camelize/;
@@ -30,7 +33,7 @@ describe 'Fixture について' => sub {
                             my @indexes = indexes { $_ eq $entry} @entries;
                             my $message = join(', ', splice(@indexes, 1));
                             # ファイル入力からとったから?
-                            diag(encode_utf8("Duplicate entry \"$entry\" in line $message."));
+                            diag("Duplicate entry \"$entry\" in line $message.");
                         }
                     }
                 };
