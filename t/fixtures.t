@@ -3,7 +3,6 @@ use Kaomojic::Strict;
 # https://metacpan.org/pod/Test::More#utf8-/-%22Wide-character-in-print%22
 use open ':std', ':encoding(utf8)';
 
-use Encode qw/encode_utf8/;
 use List::MoreUtils qw/duplicates indexes/;
 use String::CamelCase qw/camelize/;
 use Test::Spec;
