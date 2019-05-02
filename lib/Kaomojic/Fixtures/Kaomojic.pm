@@ -7,8 +7,13 @@ use Text::CSV_XS;
 use Kaomojic::Env;
 
 sub load {
+  my ($self) = @_;
+  return Text::CSV_XS->new({ binary => 1 })->csv(in => $self->path);
+}
+
+sub path {
   state $path; $path //= File::Spec->catdir(Kaomojic::Env->rootdir, qw/fixtures kaomojic.csv/);
-  return Text::CSV_XS->new({ binary => 1 })->csv(in => $path);
+  return $path;
 }
 
 1;
