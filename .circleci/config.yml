@@ -111,4 +111,4 @@ workflows:
               only: master
       - release:
           requires:
-            - generate
+            - generate_atok
