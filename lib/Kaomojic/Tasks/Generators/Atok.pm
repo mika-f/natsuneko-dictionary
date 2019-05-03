@@ -2,6 +2,7 @@ package Kaomojic::Tasks::Generators::Atok;
 use Kaomojic::Strict;
 
 use Data::Validator;
+use File::BOM;
 use List::MoreUtils qw/natatime/;
 use Module::Load;
 
@@ -27,8 +28,7 @@ sub run {
   my $iterator = natatime 512, @entries;
   my $separate = 1;
   while (my @chunk = $iterator->()) {
-    open(my $fh, '>:raw:encoding(utf-16le)', "$dist/kaomojic$separate.txt") or die "cannot open the file: $dist/kaomojic$separate.txt";
-    print $fh "\x{FEFF}"; # BOM for Unicode
+    open(my $fh, '>:encoding(utf-16le):via(File::BOM)', "$dist/kaomojic$separate.txt") or die "cannot open the file: $dist/kaomojic$separate.txt";
     say $fh '!!ATOK_TANGO_TEXT_HEADER_1';
     say $fh '!!一覧出力';
     say $fh '!!対象辞書;Kaomojic.dic';

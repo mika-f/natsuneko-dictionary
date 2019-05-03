@@ -239,6 +239,17 @@ DISTRIBUTIONS
       perl 5.006
       strict 0
       warnings 0
+  File-BOM-0.16
+    pathname: M/MA/MATTLAW/File-BOM-0.16.tar.gz
+    provides:
+      File::BOM 0.16
+    requirements:
+      Encode 1.99
+      Module::Build 0.20
+      Readonly 0.06
+      Test::Exception 0.20
+      Test::More 0.10
+      perl v5.8.3
   File-HomeDir-1.004
     pathname: R/RE/REHSACK/File-HomeDir-1.004.tar.gz
     provides:
@@ -1244,6 +1255,17 @@ DISTRIBUTIONS
     requirements:
       ExtUtils::MakeMaker 0
       Test::More 0
+  Sub-Uplevel-0.2800
+    pathname: D/DA/DAGOLDEN/Sub-Uplevel-0.2800.tar.gz
+    provides:
+      Sub::Uplevel 0.2800
+    requirements:
+      Carp 0
+      ExtUtils::MakeMaker 6.17
+      constant 0
+      perl 5.006
+      strict 0
+      warnings 0
   Task-Weaken-1.06
     pathname: E/ET/ETHER/Task-Weaken-1.06.tar.gz
     provides:
@@ -1314,6 +1336,22 @@ DISTRIBUTIONS
       List::Util 1.09
       Scalar::Util 1.09
       Test::Builder 0
+  Test-Exception-0.43
+    pathname: E/EX/EXODIST/Test-Exception-0.43.tar.gz
+    provides:
+      Test::Exception 0.43
+    requirements:
+      Carp 0
+      Exporter 0
+      ExtUtils::MakeMaker 0
+      Sub::Uplevel 0.18
+      Test::Builder 0.7
+      Test::Builder::Tester 1.07
+      Test::Harness 2.03
+      base 0
+      perl 5.006001
+      strict 0
+      warnings 0
   Test-Object-0.08
     pathname: E/ET/ETHER/Test-Object-0.08.tar.gz
     provides:
