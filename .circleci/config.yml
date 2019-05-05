@@ -110,7 +110,7 @@ jobs:
             wget https://github.com/tcnksm/ghr/releases/download/v0.12.1/ghr_v0.12.1_linux_amd64.tar.gz -O ghr.tar.gz
             mkdir ./ghr
             tar -xvf ./ghr.tar.gz --strip 1 --directory ./ghr
-      - run: ./ghr/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} $(git rev-parse --short HEAD) ./releases
+      - run: ./ghr/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} "rev.${CIRCLE_BUILD_NUM}-$(git rev-parse --short HEAD)" ./releases
 
 workflows:
   version: 2.1
