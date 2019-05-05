@@ -1,19 +1,132 @@
-version: 2
-jobs:
-  tests:
+version: 2.1
+executors:
+  perl:
     docker:
       - image: perl:5.28.1
+    working_directory: ~/repo
 
+commands:
+  restore_global_deps:
     steps:
-      - checkout
+      - restore_cache:
+          keys:
+            - v1-global-deps-{{ .Branch }}-{{ .Revision }}
+            - v1-global-deps-{{ .Branch }}-
+            - v1-global-deps-
 
+  save_global_deps:
+    steps:
+      - save_cache:
+          paths:
+            - /usr/local/bin/carton
+            - /usr/local/lib/perl5/site_perl/5.28.1
+          key: v1-global-deps-{{ .Branch }}-{{ .Revision }}
+
+  restore_repo:
+    steps:
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Branch }}-{{ .Revision }}
+            - v1-repo-{{ .Branch }}-
+            - v1-repo-
+
+  save_repo:
+    steps:
+      - save_cache:
+          paths:
+            - .
+          key: v1-repo-{{ .Branch }}-{{ .Revision }}
+
+  restore_deps:
+    steps:
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "cpanfile.snapshot" }}
+            - v1-dependencies-
+
+  save_deps:
+    steps:
+      - save_cache:
+          paths:
+            - local
+          key: v1-dependencies-{{ checksum "cpanfile.snapshot" }}
+
+jobs:
+  checkout_code:
+    executor: perl
+    steps:
+      - restore_repo
+      - checkout
+      - save_repo
+
+  install_deps:
+    executor: perl
+    steps:
+      - restore_repo
+      - restore_global_deps
+      - restore_deps
+      - run: cpanm Carton --notest
+      - run: carton install --deployment
+      - save_global_deps
+      - save_deps
+
+  test:
+    executor: perl
+    steps:
+      - restore_repo
+      - restore_global_deps
+      - restore_deps
+      - run: carton exec prove ./t/
+
+  generate_atok:
+    executor: perl
+    steps:
+      - restore_repo
+      - restore_global_deps
+      - restore_deps
+      - run: apt install nkf -y
+      - run: ./bin/runner.sh Generators::Atok Kaomojic ./dist/atok/ かお
+      - save_cache:
+          paths:
+            - ./dist/atok
+          key: v1-releases-atok-{{ .Branch }}-{{ .Revision }}
+
+  release:
+    docker:
+      - image: circleci/golang:1.12
+    working_directory: ~/repo
+    steps:
+      - restore_repo
+      - restore_cache:
+          keys:
+            - v1-releases-atok-{{ .Branch }}-{{ .Revision }}
+      - run: mkdir -p ./releases
+      - run: zip ./releases/kaomojic-atok-dictionary.zip ./dist/atok/*.txt
       - run:
-          name: Duplication Check
-          command: perl ./tests/duplication.pl ./kaomoji.txt
+          name: Publish releases to GitHub
+          command: |
+            go get github.com/tcnksm/ghr
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} ./releases
 
 workflows:
-  version: 2
-  tests:
+  version: 2.1
+  build_accept_release:
     jobs:
-      - tests
-
+      - checkout_code
+      - install_deps:
+          requires:
+            - checkout_code
+      - test:
+          requires:
+            - install_deps
+      - generate_atok:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
+                - develop
+      - release:
+          requires:
+            - generate_atok
