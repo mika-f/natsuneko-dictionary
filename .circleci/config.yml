@@ -84,7 +84,6 @@ jobs:
       - restore_repo
       - restore_global_deps
       - restore_deps
-      - run: apt install nkf -y
       - run: ./bin/runner.sh Generators::Atok Kaomojic ./dist/atok/ かお
       - save_cache:
           paths:
@@ -92,21 +91,26 @@ jobs:
           key: v1-releases-atok-{{ .Branch }}-{{ .Revision }}
 
   release:
-    docker:
-      - image: circleci/golang:1.12
-    working_directory: ~/repo
+    executor: perl
     steps:
       - restore_repo
       - restore_cache:
           keys:
             - v1-releases-atok-{{ .Branch }}-{{ .Revision }}
+      - run:
+          name: Install zip
+          command: |
+            apt update
+            apt install zip -y
       - run: mkdir -p ./releases
       - run: zip ./releases/kaomojic-atok-dictionary.zip ./dist/atok/*.txt
       - run:
-          name: Publish releases to GitHub
+          name: Install tcnksm/ghr
           command: |
-            go get github.com/tcnksm/ghr
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} ./releases
+            wget https://github.com/tcnksm/ghr/releases/download/v0.12.1/ghr_v0.12.1_linux_amd64.tar.gz -O ghr.tar.gz
+            mkdir ./ghr
+            tar -xvf ./ghr.tar.gz --strip 1 --directory ./ghr
+      - run: ./ghr/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} $(git rev-parse --short HEAD) ./releases
 
 workflows:
   version: 2.1
