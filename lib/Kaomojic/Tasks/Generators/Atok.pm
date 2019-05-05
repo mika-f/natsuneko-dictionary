@@ -16,7 +16,6 @@ sub run {
   my ($class, $args) = $v->validate(@_);
   my ($fixture, $dist, $aliased) = @$args{qw/fixture dist aliased/};
 
-  # TODO: まだ対応してないよ (fixture が)
   die 'alias is empty' if $aliased eq '';
   die 'dist path is empty' unless $dist;
 
@@ -26,7 +25,6 @@ sub run {
   load $cls;
   my @entries = map { [$_->[0], $_->[1]] } @{$cls->load};
 
-  # UTF-16LE にうまく出力できないので、 UTF-8 → nkf でやる
   # 1辞書あたり同じ読みは最大512エントリーのようなので、(めんどうなので読みに関係なく) 512エントリーずつ分割しておく
   my $iterator = natatime 512, @entries;
   my $separate = 1;
