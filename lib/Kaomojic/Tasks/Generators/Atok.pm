@@ -3,6 +3,7 @@ use Kaomojic::Strict;
 
 use Data::Validator;
 use File::BOM;
+use File::Path qw/make_path/;
 use List::MoreUtils qw/natatime/;
 use Module::Load;
 
@@ -18,6 +19,8 @@ sub run {
   # TODO: まだ対応してないよ (fixture が)
   die 'alias is empty' if $aliased eq '';
   die 'dist path is empty' unless $dist;
+
+  make_path($dist) or die 'cannot create a directory tree.';
 
   my $cls = "Kaomojic::Fixtures::$fixture";
   load $cls;
