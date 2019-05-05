@@ -85,12 +85,28 @@ jobs:
       - restore_global_deps
       - restore_deps
       - run: apt install nkf -y
-      - run: ./bin/runner.sh Generators::Atok Kaomojic
+      - run: ./bin/runner.sh Generators::Atok Kaomojic ./dist/atok/ かお
+      - save_cache:
+          paths:
+            - ./dist/atok
+          key: v1-releases-atok-{{ .Branch }}-{{ .Revision }}
 
   release:
-    executor: perl
+    docker:
+      - image: circleci/golang:1.12
+    working_directory: ~/repo
     steps:
-      - run: echo 1
+      - restore_repo
+      - restore_cache:
+          keys:
+            - v1-releases-atok-{{ .Branch }}-{{ .Revision }}
+      - run: mkdir -p ./releases
+      - run: zip ./releases/kaomojic-atok-dictionary.zip ./dist/atok/*.txt
+      - run:
+          name: Publish releases to GitHub
+          command: |
+            go get github.com/tcnksm/ghr
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} ./releases
 
 workflows:
   version: 2.1
@@ -108,7 +124,9 @@ workflows:
             - test
           filters:
             branches:
-              only: master
+              only:
+                - master
+                - develop
       - release:
           requires:
             - generate_atok
