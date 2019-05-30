@@ -2,7 +2,7 @@ version: 2.1
 executors:
   perl:
     docker:
-      - image: perl:5.28.1
+      - image: perl:5.30
     working_directory: ~/repo
 
 commands:
