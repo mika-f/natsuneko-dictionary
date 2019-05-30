@@ -41,15 +41,15 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "cpanfile.snapshot" }}
-            - v1-dependencies-
+            - v1-rev30-dependencies-{{ checksum "cpanfile.snapshot" }}
+            - v1-rev30-dependencies-
 
   save_deps:
     steps:
       - save_cache:
           paths:
             - local
-          key: v1-dependencies-{{ checksum "cpanfile.snapshot" }}
+          key: v1-rev30-dependencies-{{ checksum "cpanfile.snapshot" }}
 
 jobs:
   checkout_code:
