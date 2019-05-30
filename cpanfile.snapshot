@@ -137,12 +137,6 @@ DISTRIBUTIONS
       Devel::GlobalPhase 0.003003
     requirements:
       perl 5.008
-  Devel-PPPort-3.45
-    pathname: A/AT/ATOOMIC/Devel-PPPort-3.45.tar.gz
-    provides:
-      Devel::PPPort 3.45
-    requirements:
-      ExtUtils::MakeMaker 0
   Devel-StackTrace-2.03
     pathname: D/DR/DROLSKY/Devel-StackTrace-2.03.tar.gz
     provides:
