@@ -90,6 +90,18 @@ jobs:
             - ./dist/atok
           key: v1-releases-atok-{{ .Branch }}-{{ .Revision }}
 
+  generate_gime:
+    executor: perl
+    steps:
+      - restore_repo
+      - restore_global_deps
+      - restore_deps
+      - run: ./bin/runner.sh Generators::Google Kaomojic ./dist/google-ime/ かお
+      - save_cache:
+          paths:
+            - ./dist/google-ime
+          key: v1-releases-google-ime-{{ .Branch }}-{{ .Revision }}
+
   release:
     executor: perl
     steps:
@@ -97,6 +109,9 @@ jobs:
       - restore_cache:
           keys:
             - v1-releases-atok-{{ .Branch }}-{{ .Revision }}
+      - restore_cache:
+          keys:
+            - v1-releases-google-ime-{{ .Branch }}-{{ .Revision }}
       - run:
           name: Install zip
           command: |
@@ -104,6 +119,7 @@ jobs:
             apt install zip -y
       - run: mkdir -p ./releases
       - run: zip ./releases/kaomojic-atok-dictionary.zip ./dist/atok/*.txt
+      - run: zip ./releases/kaomojic-google-ime-dictionary.zip ./dist/google-ime/*.txt
       - run:
           name: Install tcnksm/ghr
           command: |
@@ -131,6 +147,15 @@ workflows:
               only:
                 - master
                 - develop
+      - generate_gime:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
+                - develop
       - release:
           requires:
             - generate_atok
+            - generate_gime
