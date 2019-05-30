@@ -11,7 +11,7 @@ sub run {
   state $v; $v //= Data::Validator->new(
     fixture => { isa => 'Str' },
     dist    => { isa => 'Str' },
-    aliased => { isa => 'Str', default => '' },
+    aliased => { isa => 'Str', default => 'かお' },
   )->with(qw/Method StrictSequenced/);
   my ($class, $args) = $v->validate(@_);
   my ($fixture, $dist, $aliased) = @$args{qw/fixture dist aliased/};
@@ -63,6 +63,6 @@ sub run {
 =head1 SYNOPSIS
 
   ./bin/runner.sh Generators::Atok Kaomojic ./dist/atok/kaomojic.txt
-  ./bin/runner.sh Generators::Atok Kaomojic ./dist/atok/default.txt かお
+  ./bin/runner.sh Generators::Atok Kaomojic ./dist/atok/default.txt alias
 
 =cut

@@ -10,7 +10,7 @@ sub run {
   state $v; $v //= Data::Validator->new(
     fixture => { isa => 'Str' },
     dist    => { isa => 'Str' },
-    aliased => { isa => 'Str', default => '' },
+    aliased => { isa => 'Str', default => 'かお' },
   )->with(qw/Method StrictSequenced/);
   my ($class, $args) = $v->validate(@_);
   my ($fixture, $dist, $aliased) = @$args{qw/fixture dist aliased/};
@@ -51,6 +51,6 @@ sub run {
 =head1 SYNOPSIS
 
   ./bin/runner.sh Generators::Google Kaomojic ./dist/google-ime/
-  ./bin/runner.sh Generators::Google Kaomojic ./dist/google-ime/ かお
+  ./bin/runner.sh Generators::Google Kaomojic ./dist/google-ime/ alias
 
 =cut

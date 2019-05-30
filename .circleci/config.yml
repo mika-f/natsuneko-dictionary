@@ -84,7 +84,7 @@ jobs:
       - restore_repo
       - restore_global_deps
       - restore_deps
-      - run: ./bin/runner.sh Generators::Atok Kaomojic ./dist/atok/ かお
+      - run: ./bin/runner.sh Generators::Atok Kaomojic ./dist/atok/
       - save_cache:
           paths:
             - ./dist/atok
@@ -96,7 +96,7 @@ jobs:
       - restore_repo
       - restore_global_deps
       - restore_deps
-      - run: ./bin/runner.sh Generators::Google Kaomojic ./dist/google-ime/ かお
+      - run: ./bin/runner.sh Generators::Google Kaomojic ./dist/google-ime/
       - save_cache:
           paths:
             - ./dist/google-ime
