@@ -2,6 +2,7 @@ package Kaomojic::Tasks::Generators::Google;
 use Kaomojic::Strict;
 
 use Data::Validator;
+use File::BOM;
 use File::Path qw/make_path/;
 use Module::Load;
 
@@ -23,7 +24,7 @@ sub run {
   load $cls;
   my @entries = map { [$_->[0], $_->[1]] } @{$cls->load};
 
-  open(my $fh, '>:encoding(utf-8)', "$dist/kaomojic.txt") or die "cannot open the file: $dist/kaomojic.txt";
+  open(my $fh, '>:encoding(utf-8):via(File::BOM)', "$dist/kaomojic.txt") or die "cannot open the file: $dist/kaomojic.txt";
   
   foreach my $entry (@entries) {
     my $a = $entry->[0] || $aliased;
