@@ -84,7 +84,11 @@ jobs:
       - restore_repo
       - restore_global_deps
       - restore_deps
-      - run: ./bin/runner.sh Generators::Atok Kaomojic ./dist/atok/
+      - run:
+          name: Generate dictionaries for ATOK
+          command: |
+            ./bin/runner.sh Generators::Atok Kaomojic ./dist/atok/kaomojic
+            ./bin/runner.sh Generators::Atok Ekimemo  ./dist/atok/ekimemo
       - save_cache:
           paths:
             - ./dist/atok
@@ -96,7 +100,11 @@ jobs:
       - restore_repo
       - restore_global_deps
       - restore_deps
-      - run: ./bin/runner.sh Generators::Google Kaomojic ./dist/google-ime/
+      - run:
+          name: Generate dictionaries for Google IME
+          command: |
+            ./bin/runner.sh Generators::Google Kaomojic ./dist/google-ime/kaomojic
+            ./bin/runner.sh Generators::Google Ekimemo  ./dist/google-ime/ekimemo
       - save_cache:
           paths:
             - ./dist/google-ime
@@ -118,8 +126,13 @@ jobs:
             apt update
             apt install zip -y
       - run: mkdir -p ./releases
-      - run: zip ./releases/kaomojic-atok-dictionary.zip ./dist/atok/*.txt
-      - run: zip ./releases/kaomojic-google-ime-dictionary.zip ./dist/google-ime/*.txt
+      - run:
+          name: Packaging dictionaries
+          command: |
+            zip ./releases/kaomojic-atok-dictionary.zip ./dist/atok/kaomojic/*.txt
+            zip ./releases/ekimemo-atok-dictionary.zip  ./dist/atok/ekimemo/*.txt
+            zip ./releases/kaomojic-google-ime-dictionary.zip ./dist/google-ime/kaomojic/*.txt
+            zip ./releases/ekimemo-google-ime-dictionary.zip  ./dist/google-ime/ekimemo/*.txt
       - run:
           name: Install tcnksm/ghr
           command: |
