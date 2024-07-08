@@ -1,0 +1,33 @@
+{
+  "name": "@natsuneko-laboratory/atok",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "dist/index.cjs.cjs",
+  "types": "dist/index.d.ts",
+  "module": "dist/index.es.js",
+  "scripts": {
+    "prepublish": "npm run build",
+    "build": "tsc && npm run build:vite && npm run build:tsc",
+    "build:vite": "vite build",
+    "build:tsc": "rm -f tsconfig.types.tsbuildinfo && tsc --project ./tsconfig.types.json",
+    "build:esm": "npx tsx node_modules/@natsuneko-laboratory/kiana/bin/esm-exports.ts --pattern **/*.mjs --entrypoint dist/index.mjs",
+    "test": "vitest"
+  },
+  "keywords": [],
+  "author": "Natsune Mochizuki",
+  "license": "MIT",
+  "dependencies": {
+    "@natsuneko-laboratory/dictionary-core": "workspace:^1.0.0",
+    "csv-parse": "^5.5.6"
+  },
+  "devDependencies": {
+    "@natsuneko-laboratory/kiana": "^1.1.0",
+    "@types/node": "^20.14.10",
+    "typescript": "^5.5.3",
+    "vite": "^5.3.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "extends": "../../node_modules/@natsuneko-laboratory/kiana/lib/tsconfig.lib.json",
+  "compilerOptions": {
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "rootDir": "./src"
+  },
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}

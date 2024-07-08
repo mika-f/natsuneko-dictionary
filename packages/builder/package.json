@@ -1,0 +1,29 @@
+{
+  "name": "@natsuneko-laboratory/builder",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "dist/index.cjs.cjs",
+  "types": "dist/index.d.ts",
+  "module": "dist/index.es.js",
+  "scripts": {
+    "build": "tsx bin/build.ts"
+  },
+  "keywords": [],
+  "author": "Natsune Mochizuki",
+  "license": "MIT",
+  "dependencies": {
+    "@natsuneko-laboratory/atok": "workspace:^",
+    "@natsuneko-laboratory/dictionary-core": "workspace:^1.0.0",
+    "csv-parse": "^5.5.6"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
