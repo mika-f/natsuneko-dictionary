@@ -8,6 +8,14 @@ type Item = {
   comment?: string;
 };
 
+type StringOrFunction = string | ((item: string) => string);
+
+type ProviderOptions = {
+  defaultReading?: StringOrFunction;
+  defaultCategory?: StringOrFunction;
+  defaultComment?: StringOrFunction;
+};
+
 interface IMEDictionary {
   register(item: Item): void;
   entries(): Item[];
@@ -23,22 +31,42 @@ class Provider implements IMEDictionary {
 
   private readonly providers: IMEDictionary[] = [];
   private readonly items: Item[] = [];
+  private readonly defaultReading: StringOrFunction = "";
+  private readonly defaultCategory: StringOrFunction = "";
+  private readonly defaultComment: StringOrFunction = "";
 
-  static async fromCSV(path: string): Promise<Provider> {
+  private getDefault(item: string, defaultValue: StringOrFunction) {
+    if (typeof defaultValue === "function") {
+      return defaultValue(item ?? null);
+    }
+
+    return defaultValue ?? "";
+  }
+
+  static async fromCSV(
+    path: string,
+    opts?: ProviderOptions
+  ): Promise<Provider> {
     const content = await fs.readFile(path, { encoding: "utf-8" });
     const records = parse(content, {});
-    const dictionary = new Provider();
+    const dictionary = new Provider(opts);
 
     for (const record of records) {
-      const [word, reading, category, comment] = record;
+      const [reading, word, category, comment] = record;
       dictionary.register({ word, reading, category, comment });
     }
 
     return dictionary;
   }
 
-  add(provider: IMEDictionary): void {
-    this.providers.push(provider);
+  public constructor(opts?: ProviderOptions) {
+    this.defaultReading = opts?.defaultReading ?? "";
+    this.defaultCategory = opts?.defaultCategory ?? "";
+    this.defaultComment = opts?.defaultComment ?? "";
+  }
+
+  add(...provider: IMEDictionary[]): void {
+    this.providers.push(...provider);
   }
 
   register(item: Item): void {
@@ -50,8 +78,15 @@ class Provider implements IMEDictionary {
   }
 
   async save(path: string): Promise<void> {
+    const items = this.entries().map((w) => ({
+      reading: w.reading || this.getDefault(w.word, this.defaultReading),
+      word: w.word,
+      category: w.category || this.getDefault(w.word, this.defaultCategory),
+      comment: w.comment || this.getDefault(w.word, this.defaultComment),
+    }));
+
     for (const provider of this.providers) {
-      for (const item of this.entries()) {
+      for (const item of items) {
         provider.register(item);
       }
 

@@ -1,5 +1,6 @@
 import { Atok } from "@natsuneko-laboratory/atok";
 import { Provider } from "@natsuneko-laboratory/dictionary-core";
+import { GoogleIME } from "@natsuneko-laboratory/google-ime";
 
 const DICTIONARIES = [
   "Kaomojic",
@@ -10,10 +11,15 @@ const DICTIONARIES = [
 
 for (const dictionary of DICTIONARIES) {
   const provider = await Provider.fromCSV(
-    `../../dictionaries/${dictionary.toLowerCase()}.csv`
+    `../../dictionaries/${dictionary.toLowerCase()}.csv`,
+    {
+      defaultReading: "かお",
+      defaultCategory: "顔文字",
+    }
   );
 
-  provider.add(new Atok("atok", { default: "かお" }));
+  provider.add(new Atok(dictionary));
+  provider.add(new GoogleIME(dictionary));
 
   await provider.save(`../../dist/${dictionary.toLowerCase()}`);
 }
