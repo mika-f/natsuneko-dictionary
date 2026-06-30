@@ -24,7 +24,7 @@
     "@natsuneko-laboratory/kiana": "^1.1.0",
     "@types/node": "^20.14.10",
     "typescript": "^5.5.3",
-    "vite": "^6.4.2"
+    "vite": "^6.4.3"
   },
   "publishConfig": {
     "access": "public"
